@@ -1,4 +1,4 @@
-from models import Artigos
+from models import Artigos, Usuarios
 
 # Insere dados na tabela artigos
 def insere_artigos():
@@ -24,8 +24,19 @@ def exclui_artigos():
     artigo = Artigos.query.filter_by(titulo='Teste2').first()
     artigo.delete()
 
+def insere_usuario(login, senha):
+    usuario = Usuarios(login=login, senha=senha)
+    usuario.save()
+
+def consulta_todos_usuarios():
+    usuarios = Usuarios.query.all()
+    print(usuarios)
+
 if __name__ == '__main__':
+    insere_usuario('Admin', '1234')
+    insere_usuario('Dev', '456')
+    consulta_todos_usuarios()
     #insere_artigos()
     #altera_artigos()
-    exclui_artigos()
+    #exclui_artigos()
     consulta_artigos()

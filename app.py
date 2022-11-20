@@ -1,12 +1,33 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
-from models import Artigos, Topicos
-import json
+from models import Artigos, Topicos, Usuarios
+from flask_httpauth import HTTPBasicAuth
 
+auth = HTTPBasicAuth()
 app = Flask(__name__)
 api = Api(app)
 
+# Users = {
+#     'Admin': '123',
+#     'Analista': '321'
+# }
+
+# @auth.verify_password
+# def verificacao(login, senha):
+#     print('validar usuario')
+#     print(Users.get(login) == senha)
+#     if not(login, senha):
+#         return False
+#     return Users.get(login) == senha
+
+@auth.verify_password
+def verificacao(login, senha):
+    if not(login, senha):
+        return False
+    return Usuarios.query.filter_by(login=login, senha=senha).first()
+
 class Artigo(Resource):
+    @auth.login_required
     def get(self, titulo):
         artigo = Artigos.query.filter_by(titulo=titulo).first()
         try:
@@ -44,6 +65,7 @@ class Artigo(Resource):
         return {'status':'sucesso', 'mensagem': mensagem}
 
 class ListaArtigos(Resource):
+    @auth.login_required
     def get(self):
         artigos = Artigos.query.all()
         response = [{'id': i.id, 'titulo': i.titulo, 'conteudo': i.conteudo} for i in artigos]
