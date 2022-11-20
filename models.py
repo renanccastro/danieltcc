@@ -16,7 +16,7 @@ class Artigos(Base):
     id = Column(Integer, primary_key=True)
     titulo = Column(String(40), index=True)
     conteudo = Column(String)
-# criar coluna de imagem e data
+# to do: criar coluna de imagem e data
 
     def __repr__(self):
         return '<Artigo {}>'.format(self.titulo)

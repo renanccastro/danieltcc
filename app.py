@@ -94,7 +94,7 @@ class ListaTopicos(Resource):
         topico = Topicos(titulo=dados['titulo'], artigo=artigo)
         topico.save()
         response = {
-            'titulo': topico.titulo.artigo,
+            'titulo': topico.titulo,
             'id': topico.id
         }
         return response
