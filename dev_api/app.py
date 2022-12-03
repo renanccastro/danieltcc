@@ -24,21 +24,19 @@ def configure_app(flask_app):
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
 
-configure_app(app)
-
-blueprint = Blueprint('api', __name__, url_prefix='/api')
-api.init_app(blueprint)
-api.add_namespace(blog_posts_namespace)
-api.add_namespace(blog_categories_namespace)
-app.register_blueprint(blueprint)
-
-db.init_app(app)
 
 
 def main():
+    configure_app(app)
     log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run(port= os.getenv("PORT", 8081),debug=settings.FLASK_DEBUG)
+    blueprint = Blueprint('api', __name__, url_prefix='/api')
+    api.init_app(blueprint)
+    api.add_namespace(blog_posts_namespace)
+    api.add_namespace(blog_categories_namespace)
+    app.register_blueprint(blueprint)
+    print(app.url_map)
+    db.init_app(app)
+
+    app.run(port= os.getenv("PORT", 8081),debug=settings.FLASK_DEBUG, host="0.0.0.0")
 
 
-if __name__ == "__main__":
-    main()
