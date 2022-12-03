@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 from flask_restplus import fields
 from dev_api.api.restplus import api
 
