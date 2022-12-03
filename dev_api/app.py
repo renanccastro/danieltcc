@@ -8,7 +8,7 @@ from dev_api.api.blog.endpoints.categories import ns as blog_categories_namespac
 from dev_api.api.restplus import api
 from dev_api.database import db
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='../static')
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
 logging.config.fileConfig(logging_conf_path)
 log = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ db.init_app(app)
 
 def main():
     log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run(port= os.getenv("PORT"),debug=settings.FLASK_DEBUG)
+    app.run(port= os.getenv("PORT", 8081),debug=settings.FLASK_DEBUG)
 
 
 if __name__ == "__main__":
